@@ -78,13 +78,11 @@ def send_message(chat_id, text):
 # ================= Основной обработчик webhook =================
 @app.route("/", methods=["POST"])
 def main():
-    try:
-        data = request.get_json()
-        if "message" not in data:
-            return {"ok": True}
-
+    data = request.get_json()
+    if "message" in data:
         chat_id = data["message"]["chat"]["id"]
-        text = data["message"].get("text", "")
+        requests.post(BASE_URL + "sendMessage", data={"chat_id": chat_id, "text": "Бот живой!"})
+    return {"ok": True}
 
         # Команда /смена <кол-во строк>
         if text.startswith("/смена"):
@@ -128,3 +126,4 @@ def main():
 if __name__ == "__main__":
     app.run(port=5000)
         
+
